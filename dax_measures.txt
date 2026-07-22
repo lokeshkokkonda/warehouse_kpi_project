@@ -1,0 +1,30 @@
+// 1. Dock-to-Stock Average Hours
+Dock_To_Stock_Avg_Hours = 
+AVERAGEX(
+    'wms_event_log',
+    DATEDIFF('wms_event_log'[Received_Timestamp], 'wms_event_log'[Putaway_Timestamp], MINUTE) / 60.0
+)
+
+// 2. Order Pick Accuracy Rate (%)
+Pick_Accuracy_Pct = 
+DIVIDE(
+    COUNTROWS(FILTER('wms_event_log', 'wms_event_log'[Ordered_Qty] = 'wms_event_log'[Picked_Qty])),
+    COUNTROWS('wms_event_log'),
+    0
+) * 100
+
+// 3. Lines Picked Per Hour (LPPH)
+LPPH = 
+DIVIDE(
+    COUNTROWS('wms_event_log'),
+    SUM('wms_event_log'[Pick_Duration_Minutes]) / 60.0,
+    0
+)
+
+// 4. Storage Cube Utilization (%)
+Cube_Utilization_Pct = 
+DIVIDE(
+    SUM('wms_event_log'[Occupied_Volume_M3]),
+    SUM('wms_event_log'[Location_Capacity_M3]),
+    0
+) * 100

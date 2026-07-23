@@ -20,30 +20,9 @@ This project builds an automated end-to-end analytics engine that processes WMS 
 
 ```mermaid
 flowchart LR
-    A[Raw WMS Event Log\ndata/raw/wms_event_log.csv] --> B[Python Audit Engine\nsrc/analyze_wms_kpis.py]
-    B --> C[Processed KPI Summary\ndata/processed/warehouse_kpi_summary.xlsx]
-    B --> D[Visual Productivity Chart\nreports/picking_productivity_chart.png]
+    A[Raw WMS Event Log] --> B[Python Audit Engine]
+    B --> C[Processed KPI Summary]
+    B --> D[Visual Productivity Chart]
     A --> E[Power BI Data Model]
-    E --> F[Explicit DAX Measures\ndax_measures.txt]
-    F --> G[Interactive Executive Dashboard]
-
-    warehouse_kpi_project/
-│
-├── README.md                     <-- Project documentation
-├── requirements.txt              <-- Python dependencies
-├── .gitignore                    <-- Git exclusion rules
-├── LICENSE                       <-- MIT License
-├── dax_measures.txt              <-- Explicit DAX formulas
-│
-├── data/
-│   ├── raw/
-│   │   └── wms_event_log.csv     <-- Raw WMS event logs
-│   └── processed/
-│       └── warehouse_kpi_summary.xlsx
-│
-├── src/
-│   ├── generate_wms_data.py      <-- Event log generator
-│   └── analyze_wms_kpis.py       <-- Audit calculation engine
-│
-└── reports/
-    └── picking_productivity_chart.png <-- Visual reports
+    E --> F[Explicit DAX Measures]
+    F --> G[Interactive Dashboard]

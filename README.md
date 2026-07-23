@@ -1,22 +1,54 @@
-# Warehouse Operations & Interactive KPI Dashboard
+# Warehouse Operations & WMS Performance Analytics Engine
 
 ## Overview
-This project models fulfillment center throughput, storage volume efficiency, and labor productivity using 1,000 WMS (Warehouse Management System) event transaction logs. It evaluates operational SLAs, pick accuracy, and rack volume utilization across warehouse picking zones.
+This project processes event logs from a Warehouse Management System (WMS) to audit fulfillment center productivity, receiving cycle times, storage space efficiency, and picking precision.
 
-## Core Metrics & Target Benchmarks
-- **Dock-to-Stock Cycle Time:** Time elapsed between inbound receiving and stock putaway ($< 2.0\text{ hours}$ SLA target).
-- **Order Pick Accuracy Rate (%):** Proportion of error-free line items picked ($> 99.5\%$ target).
-- **Lines Picked Per Hour (LPPH):** Labor throughput metric measuring picked order lines per labor hour completed.
-- **Storage Cube Utilization (%):** Usable 3D rack space occupied by stored inventory ($75\% - 85\%$ optimal range).
+---
+
+## Core Warehouse Operational Metrics
+
+### 1. Dock-to-Stock Cycle Time (Hours)
+Measures the duration from dock arrival to putaway stock availability:
+$$\text{Dock-to-Stock Time} = \text{Putaway Timestamp} - \text{Receiving Timestamp}$$
+
+### 2. Order Pick Accuracy Rate (%)
+Evaluates order picking precision before shipping:
+$$\text{Pick Accuracy \%} = \left( \frac{\text{Perfect Order Picks}}{\text{Total Pick Lines Executed}} \right) \times 100$$
+
+### 3. Lines Picked Per Hour (LPPH)
+Tracks picker labor productivity across facility zones:
+$$\text{LPPH} = \frac{\text{Total Pick Lines Executed}}{\text{Total Labor Hours Completed}}$$
+
+### 4. Storage Cube Utilization (%)
+Measures 3D rack space usage against total facility capacity:
+$$\text{Cube Utilization \%} = \left( \frac{\text{Occupied Volume (m}^3\text{)}}{\text{Location Capacity (m}^3\text{)}} \right) \times 100$$
+
+---
+
+## Productivity Visual Report
+
+![Picking Productivity Chart](reports/picking_productivity_chart.png)
+
+---
 
 ## Repository Structure
-- `generate_wms_data.py`: WMS event log dataset generator (with operational delays and picking noise).
-- `wms_event_log.csv`: Transaction log containing 1,000 order picking and receiving timestamps.
-- `analyze_wms_kpis.py`: Python audit script verifying operational benchmarks across warehouse zones.
-- `dax_measures.txt`: Production DAX formulas used for dynamic filtering in Power BI.
-- `README.md`: Functional documentation and metric definitions.
 
-## How to Run
-```cmd
-python generate_wms_data.py
-python analyze_wms_kpis.py
+```text
+warehouse_kpi_project/
+│
+├── README.md                     <-- Documentation
+├── requirements.txt              <-- Python dependencies
+├── .gitignore                    <-- Exclusion rules
+│
+├── data/
+│   ├── raw/
+│   │   └── wms_event_log.csv     <-- Raw event log
+│   └── processed/
+│       └── warehouse_kpi_summary.xlsx
+│
+├── src/
+│   ├── generate_wms_data.py      <-- Dataset generator
+│   └── analyze_wms_kpis.py       <-- Audit calculation engine
+│
+└── reports/
+    └── picking_productivity_chart.png
